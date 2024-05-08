@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 
+//components
+import WorkoutDetails from '../components/WorkoutDetails'
+import WorkoutForm from '../components/WorkoutForm'
+
+
 const Home = () => {
   const [workouts, setWorkouts] = useState(null);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       //this fetches data and stores it in RESPONSE object
-      const response = await fetch("http://localhost:4000/api/workouts");
+      const response = await fetch("/api/workouts");
       //this parses the data into json
       const json = await response.json();
       //i guess the .ok is built in? it checks to make sure we got the thing we want
@@ -21,8 +26,11 @@ const Home = () => {
     <div className="home">
       <div className="workouts">
         {workouts &&
-          workouts.map((workout) => <p key={workout._id}>{workout.title}</p>)}
+          workouts.map((workout) => (
+            <WorkoutDetails key={workout._id} workout={workout}/>
+          ))}
       </div>
+      <WorkoutForm/>
     </div>
   );
 };

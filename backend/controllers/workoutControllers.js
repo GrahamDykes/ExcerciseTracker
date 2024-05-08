@@ -49,7 +49,7 @@ const deleteWorkout = async (req, res) => {
     console.log('\nDelete Failure\n')
       return res.status(404).json({error:'Delete not found'})
     }
-    console.log(`You have deleted:\n`,workout)
+    console.log(`You have deleted:  `,workout.title)
 res.status(200).json(workout)
 
 };
@@ -67,7 +67,7 @@ if(!workout){
     console.log('\nUpdate Failure\n')
       return res.status(404).json({error:'Update not found'})
     }
-    console.log(`You have updated: `,workout.id)
+    console.log(`You have updated: `,workout.title)
 res.status(200).json(workout)
 
 }
