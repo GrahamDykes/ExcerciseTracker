@@ -67,7 +67,7 @@ if(!workout){
     console.log('\nUpdate Failure\n')
       return res.status(404).json({error:'Update not found'})
     }
-    console.log(`You have updated:\n`,workout.id)
+    console.log(`You have updated: `,workout.id)
 res.status(200).json(workout)
 
 }
