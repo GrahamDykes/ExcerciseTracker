@@ -19,11 +19,14 @@ app.use((req, res, next) => {
 app.use("/api/workouts", workoutRoutes);
 
 //connect to database with server listener inside
-mongoose.connect(process.env.MONGO_URI).then(()=>{
-console.log('--Database Connected--')
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("--Database Connected--");
     app.listen(process.env.PORT, () => {
-  console.log(`App is listening to the ruckus on port ${process.env.PORT}`);
-});
-
-}).catch((error)=>{console.log('MongoDB error:\n',error)})
-
+      console.log(`App is listening to the ruckus on port ${process.env.PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("MongoDB error:\n", error);
+  });
