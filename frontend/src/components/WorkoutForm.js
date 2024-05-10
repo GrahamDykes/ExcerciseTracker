@@ -69,7 +69,7 @@ const [emptyFields, setEmptyFields]= useState([])
       />
 
       <button>Add Workout</button>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error">{error}{emptyFields && <p>{emptyFields.map((e)=>`${e} `)}</p>}</div>}
     </form>
   )
 }
