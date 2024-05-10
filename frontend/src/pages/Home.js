@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useWorkoutsContext } from "../hook/useWorkoutsContext";
 
 
@@ -24,8 +24,8 @@ const Home = () => {
         dispatch({type:'SET_WORKOUTS', payload : json})
       }
     };
-    //having defined our function ^, we call it once, and put the empty array there so it only runs ONCE when component gets rendered
-    fetchWorkouts()}, []);
+    //having defined our function ^, we call it once, updates with DISPATCH now
+    fetchWorkouts()}, [dispatch]);
 
   return (
     <div className="home">
