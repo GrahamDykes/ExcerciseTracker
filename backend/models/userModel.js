@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
+const validator = require("validator");
 
 const Schema = mongoose.Schema;
 
@@ -10,26 +11,41 @@ const userSchema = new Schema({
     unique: true,
   },
   password: {
-    type:String,
-    required:true
-  }
+    type: String,
+    required: true,
+  },
 });
 
-//static signup method
-userSchema.statics.signup = async (email,password)=>{
-            //gotta use THIS when working with the collection at this level
-    const exists = await this.findOne({email})
-    if(exists){
-        throw Error('Email already in use')
-    }
+//static signup method - cannot use arrow function due to THIS keyword being used
+userSchema.statics.signup = async function (email, password) {
+  //validation
+  if (!email || !password) {
+    console.log("Error: User input field missing");
+    throw Error("All fields must be filled");
+  }
 
-const salt = await bcrypt.genSalt(10)
-const hash = await bcrypt.hash(password, salt)
+  if (!validator.isEmail(email)) {
+    console.log("Error: Email not valid");
+    throw Error("Email not valid");
+  }
+  //gotta use THIS when working with the collection at this level
+  const exists = await this.findOne({ email });
+  if (exists) {
+    console.log("Error: Email in use");
+    throw Error("Email already in use");
+  }
 
+  if (!validator.isStrongPassword(password)) {
+    console.log("Error: Password not strong enough");
+    throw Error("Password not strong enough");
+  }
 
-const user = await this.create({email,password:hash})
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
 
-return user
-}
+  const user = await this.create({ email, password: hash });
+  console.log(`User created: ${user._id}`);
+  return user;
+};
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model("User", userSchema);
