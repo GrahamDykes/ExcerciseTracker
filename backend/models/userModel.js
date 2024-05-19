@@ -28,6 +28,7 @@ userSchema.statics.signup = async function (email, password) {
     console.log("Error: Email not valid");
     throw Error("Email not valid");
   }
+  
   //gotta use THIS when working with the collection at this level
   const exists = await this.findOne({ email });
   if (exists) {
@@ -47,5 +48,32 @@ userSchema.statics.signup = async function (email, password) {
   console.log(`User created: ${user._id}`);
   return user;
 };
+
+//static login method
+userSchema.statics.login = async function(email,password){
+    if (!email || !password) {
+        console.log("Error: User input field missing");
+        throw Error("All fields must be filled");
+      }
+
+      const user = await this.findOne({ email });
+
+      if (!user) {
+        console.log("Error: No Email Found");
+        throw Error("Incorrect Email");
+      }
+    
+      const match = await bcrypt.compare(password,user.password)
+
+      if(!match){
+        console.log("Error: Bad Pass");
+        throw Error("Incorrect Password");
+      }
+
+      return user
+}
+
+
+
 
 module.exports = mongoose.model("User", userSchema);
