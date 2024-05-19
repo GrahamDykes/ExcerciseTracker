@@ -1,21 +1,34 @@
-const express = require("express");
-const Workout = require("../models/workoutModel");
-const router = express.Router();
-const {createWorkout, getWorkouts, getWorkout, updateWorkout ,deleteWorkout } = require("../controllers/workoutControllers")
+const express = require('express')
+const {
+  createWorkout,
+  getWorkouts,
+  getWorkout,
+  deleteWorkout,
+  updateWorkout
+} = require('../controllers/workoutControllers')
 
-//get ALL workouts
-router.get("/", getWorkouts);
+//injects middleware to ALL routes!!!
+const requireAuth = require('../middleware/requireAuth')
 
-//get a SINGLE workout
-router.get("/:id", getWorkout);
+const router = express.Router()
 
-//POST a new workout
-router.post("/", createWorkout);
+// require auth for all workout routes
+router.use(requireAuth)
 
-//DELETE a workout
-router.delete("/:id", deleteWorkout);
+// GET all workouts
+router.get('/', getWorkouts)
 
-//UPDATE a workout
-router.patch("/:id", updateWorkout);
+//GET a single workout
+router.get('/:id', getWorkout)
 
-module.exports = router;
+// POST a new workout
+router.post('/', createWorkout)
+
+// DELETE a workout
+router.delete('/:id', deleteWorkout)
+
+// UPDATE a workout
+router.patch('/:id', updateWorkout)
+
+
+module.exports = router
